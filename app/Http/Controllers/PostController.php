@@ -55,7 +55,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return to_route('home');
+        return back();
     }
 
     public function destroy(DestroyPostRequest $request)
@@ -68,6 +68,6 @@ class PostController extends Controller
 
         $post->delete();
 
-        return to_route('home');
+        return back();
     }
 }

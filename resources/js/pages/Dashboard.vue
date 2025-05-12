@@ -79,27 +79,27 @@ const changeSort = (field: string) => {
                                 <th class="pb-2 text-left font-medium">
                                     <div class="flex items-center gap-1">
                                         <span>Name</span>
-                                        <button
-                                            @click="changeSort('name')"
-                                            class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                            title="Sort by name"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                :class="{'text-primary dark:text-primary-light': sortField === 'name'}">
-                                                <!-- Triangle pointing up (for ascending) -->
-                                                <path v-if="sortField === 'name' && sortDirection === 'asc'"
-                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 15l7-7 7 7" />
-                                                <!-- Triangle pointing down (for descending) -->
-                                                <path v-else-if="sortField === 'name' && sortDirection === 'desc'"
-                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 9l-7 7-7-7" />
-                                                <!-- Default (neutral) triangle icon -->
-                                                <path v-else
-                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 15l7-7 7 7" />
-                                            </svg>
-                                        </button>
+                                            <button
+                                                @click="changeSort('name')"
+                                                class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                                title="Sort by name"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    :class="{'text-[#f53003] dark:text-[#FF4433]': sortField === 'name'}">
+                                                    <!-- Triangle pointing up (for ascending) -->
+                                                    <path v-if="sortField === 'name' && sortDirection === 'asc'"
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 15l7-7 7 7" />
+                                                    <!-- Triangle pointing down (for descending) -->
+                                                    <path v-else-if="sortField === 'name' && sortDirection === 'desc'"
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 9l-7 7-7-7" />
+                                                    <!-- Default (neutral) triangle icon -->
+                                                    <path v-else
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 15l7-7 7 7" />
+                                                </svg>
+                                            </button>
                                     </div>
                                 </th>
                                 <th class="pb-2 text-left font-medium">
@@ -107,20 +107,23 @@ const changeSort = (field: string) => {
                                         <span>Email</span>
                                         <button
                                             @click="changeSort('email')"
-                                            class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
                                             title="Sort by email"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                :class="{'text-primary dark:text-primary-light': sortField === 'email'}">
+                                                :class="{'text-[#f53003] dark:text-[#FF4433]': sortField === 'email'}">
+                                                <!-- Triangle pointing up (for ascending) -->
                                                 <path v-if="sortField === 'email' && sortDirection === 'asc'"
                                                     stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M5 15l7-7 7 7" />
+                                                <!-- Triangle pointing down (for descending) -->
                                                 <path v-else-if="sortField === 'email' && sortDirection === 'desc'"
                                                     stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M19 9l-7 7-7-7" />
+                                                <!-- Default (neutral) triangle icon -->
                                                 <path v-else
                                                     stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 15l7-7 7 7" />
+                                                        d="M5 15l7-7 7 7" />
                                             </svg>
                                         </button>
                                     </div>
@@ -128,48 +131,54 @@ const changeSort = (field: string) => {
                                 <th class="pb-2 text-left font-medium">
                                     <div class="flex items-center gap-1">
                                         <span>IP Address</span>
-                                        <button
-                                            @click="changeSort('ip_address')"
-                                            class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                            title="Sort by IP"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                :class="{'text-primary dark:text-primary-light': sortField === 'ip_address'}">
-                                                <path v-if="sortField === 'ip_address' && sortDirection === 'asc'"
-                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 15l7-7 7 7" />
-                                                <path v-else-if="sortField === 'ip_address' && sortDirection === 'desc'"
-                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 9l-7 7-7-7" />
-                                                <path v-else
-                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 15l7-7 7 7" />
-                                            </svg>
-                                        </button>
+                                            <button
+                                                @click="changeSort('ip_address')"
+                                                class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                                title="Sort by ip address"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    :class="{'text-[#f53003] dark:text-[#FF4433]': sortField === 'ip_address'}">
+                                                    <!-- Triangle pointing up (for ascending) -->
+                                                    <path v-if="sortField === 'ip_address' && sortDirection === 'asc'"
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 15l7-7 7 7" />
+                                                    <!-- Triangle pointing down (for descending) -->
+                                                    <path v-else-if="sortField === 'ip_address' && sortDirection === 'desc'"
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 9l-7 7-7-7" />
+                                                    <!-- Default (neutral) triangle icon -->
+                                                    <path v-else
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 15l7-7 7 7" />
+                                                </svg>
+                                            </button>
                                     </div>
                                 </th>
                                 <th class="pb-2 text-left font-medium">Message</th>
                                 <th class="pb-2 text-left font-medium">
                                     <div class="flex items-center gap-1">
                                         <span>Posted</span>
-                                        <button
-                                            @click="changeSort('created_at')"
-                                            class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                            title="Sort by date"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                :class="{'text-primary dark:text-primary-light': sortField === 'created_at'}">
-                                                <path v-if="sortField === 'created_at' && sortDirection === 'asc'"
-                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 15l7-7 7 7" />
-                                                <path v-else-if="sortField === 'created_at' && sortDirection === 'desc'"
-                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 9l-7 7-7-7" />
-                                                <path v-else
-                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 15l7-7 7 7" />
-                                            </svg>
-                                        </button>
+                                            <button
+                                                @click="changeSort('created_at')"
+                                                class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                                title="Sort by date"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    :class="{'text-[#f53003] dark:text-[#FF4433]': sortField === 'created_at'}">
+                                                    <!-- Triangle pointing up (for ascending) -->
+                                                    <path v-if="sortField === 'created_at' && sortDirection === 'asc'"
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 15l7-7 7 7" />
+                                                    <!-- Triangle pointing down (for descending) -->
+                                                    <path v-else-if="sortField === 'created_at' && sortDirection === 'desc'"
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 9l-7 7-7-7" />
+                                                    <!-- Default (neutral) triangle icon -->
+                                                    <path v-else
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 15l7-7 7 7" />
+                                                </svg>
+                                            </button>
                                     </div>
                                 </th>
                             </tr>

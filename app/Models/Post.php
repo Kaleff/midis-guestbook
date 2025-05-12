@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,13 +29,6 @@ class Post extends Model
      * @var array
      */
     protected $appends = ['editable', 'image_url'];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = ['ip_address'];
 
     /**
      * Determine if the post is editable.
@@ -68,5 +62,15 @@ class Post extends Model
                 return null;
             }
         );
+    }
+
+    public function toArray()
+    {
+        $array = parent::toArray();
+        if (!Auth::check()) {
+            unset($array['ip_address']);
+        }
+
+        return $array;
     }
 }

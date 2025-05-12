@@ -6,4 +6,6 @@ export interface Post {
   updated_at: string;
   editable?: boolean;
   image_url?: string;
+  email?: string;
+  ip_address?: string;
 }

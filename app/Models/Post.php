@@ -18,6 +18,7 @@ class Post extends Model
         'email',
         'text',
         'ip_address',
+        'image',
     ];
 
      /**

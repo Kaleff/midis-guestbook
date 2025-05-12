@@ -1,5 +1,18 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import Modal from '@/components/ui/modal/Modal.vue';
+import PostForm from '@/components/ui/form/PostForm.vue';
+
+const showModal = ref(false);
+
+const openModal = () => {
+    showModal.value = true;
+};
+
+const closeModal = () => {
+    showModal.value = false;
+};
 </script>
 
 <template>
@@ -50,8 +63,8 @@ import { Head, Link } from '@inertiajs/vue3';
                             <span>
                                 Leave the
                                 <a
-                                    href="https://laravel.com/docs"
-                                    target="_blank"
+                                    href="javascript:void(0)"
+                                    @click="openModal"
                                     class="ml-1 inline-flex items-center space-x-1 font-medium text-[#f53003] underline underline-offset-4 dark:text-[#FF4433]"
                                 >
                                     <span>message</span>
@@ -101,8 +114,8 @@ import { Head, Link } from '@inertiajs/vue3';
                     <ul class="flex gap-3 text-sm leading-normal">
                         <li>
                             <a
-                                href="https://cloud.laravel.com"
-                                target="_blank"
+                                href="javascript:void(0)"
+                                @click="openModal"
                                 class="inline-block rounded-sm border border-black bg-[#1b1b18] px-5 py-1.5 text-sm leading-normal text-white hover:border-black hover:bg-black dark:border-[#eeeeec] dark:bg-[#eeeeec] dark:text-[#1C1C1A] dark:hover:border-white dark:hover:bg-white"
                             >
                                 Leave a message
@@ -114,4 +127,12 @@ import { Head, Link } from '@inertiajs/vue3';
         </div>
         <div class="h-14.5 hidden lg:block"></div>
     </div>
+    <Modal
+        :isOpen="showModal"
+        title="Send us a message"
+        :isForm="true"
+        @close="closeModal"
+    >
+        <PostForm />
+    </Modal>
 </template>

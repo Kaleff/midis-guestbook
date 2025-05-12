@@ -111,6 +111,15 @@
 import { useForm } from '@inertiajs/vue3';
 import { ref, defineEmits } from 'vue';
 
+// Define props for the component
+defineProps({
+    id: {
+        type: Number,
+        default: 0,
+        required: true,
+    },
+});
+
 const emit = defineEmits(['close']);
 
 // Success message state
@@ -135,9 +144,8 @@ const form = useForm<{
 const submitForm = () => {
     form.post(route('post.store'), {
         preserveScroll: true,
-        onSuccess: (page) => {
-            const message = page.props.flash?.message || 'Post created successfully';
-            successMessage.value = message;
+        onSuccess: () => {
+            successMessage.value = 'Post created successfully';
             showSuccess.value = true;
             form.reset();
 

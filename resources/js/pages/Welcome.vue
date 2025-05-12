@@ -18,11 +18,15 @@ const props = defineProps<{
   };
   message?: string;
   success?: boolean;
+  order_column?: string;
+  order_direction?: string;
 }>();
 
 const posts = computed(() => props.pagination?.data || []);
 const currentPage = computed(() => props.pagination?.current_page || 1);
 const lastPage = computed(() => props.pagination?.last_page || 1);
+const sortField = computed(() => props.order_column || 'created_at');
+const sortDirection = computed(() => props.order_direction || 'desc');
 
 const showModal = ref(false);
 const showDeleteModal = ref(false);
@@ -62,6 +66,19 @@ const formatDate = (dateString: string): string => {
     const minutes = String(date.getMinutes()).padStart(2, '0');
 
     return `${year}.${month}.${day} ${hours}:${minutes}`;
+};
+
+const changeSort = (field: string) => {
+    // If clicking on the current sort field, toggle direction
+    const direction = field === sortField.value
+        ? (sortDirection.value === 'asc' ? 'desc' : 'asc')
+        : 'asc'; // Default to ascending for a new sort field
+
+    window.location.href = route('home', {
+        page: 1,
+        order_column: field,
+        order_direction: direction
+    });
 };
 </script>
 
@@ -184,9 +201,35 @@ const formatDate = (dateString: string): string => {
                         <table class="w-full">
                             <thead>
                                 <tr class="border-b border-[#e3e3e0] dark:border-[#3E3E3A]">
-                                    <th class="pb-2 text-left font-medium">Name</th>
+                                    <th class="pb-2 text-left font-medium">
+                                        <div class="flex items-center gap-1">
+                                            <span>Name</span>
+                                            <button
+                                                @click="changeSort('name')"
+                                                class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                                title="Sort by name"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-[#f53003] dark:text-[#FF4433]': sortField === 'name'}">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </th>
                                     <th class="pb-2 text-left font-medium">Message</th>
-                                    <th class="pb-2 text-left font-medium">Posted</th>
+                                    <th class="pb-2 text-left font-medium">
+                                        <div class="flex items-center gap-1">
+                                            <span>Posted</span>
+                                            <button
+                                                @click="changeSort('created_at')"
+                                                class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                                title="Sort by date"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-[#f53003] dark:text-[#FF4433]': sortField === 'created_at'}">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </th>
                                     <th class="pb-2 text-left font-medium">Actions</th>
                                 </tr>
                             </thead>

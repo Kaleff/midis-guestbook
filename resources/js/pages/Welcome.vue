@@ -133,6 +133,8 @@ const closeModal = () => {
         :isForm="true"
         @close="closeModal"
     >
-        <PostForm />
+        <PostForm
+            @close="closeModal"
+        />
     </Modal>
 </template>

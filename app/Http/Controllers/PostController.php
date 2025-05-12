@@ -27,9 +27,7 @@ class PostController extends Controller
 
         return to_route('home', [
             'message' => 'Post created successfully',
-            'success' => true,
-            'post' => $post,
-            'data' => $request->all(),
+            'success' => true
         ]);
     }
 }

@@ -3,6 +3,19 @@
         @submit.prevent="submitForm"
         class="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-[#161615] dark:text-[#EDEDEC]"
     >
+        <!-- Success Alert -->
+        <div
+            v-if="showSuccess"
+            class="mb-6 rounded-sm border border-[#9be679] bg-[#f2ffed] px-4 py-3 text-sm text-[#2e7b15] dark:border-[#3e8728] dark:bg-[#071f04] dark:text-[#9be679]"
+        >
+            <div class="flex items-center">
+                <svg class="h-5 w-5 mr-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path>
+                </svg>
+                <span>{{ successMessage }}</span>
+            </div>
+        </div>
+
         <!-- Name Input -->
         <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-[#706f6c] dark:text-[#A1A09A]">
@@ -88,29 +101,51 @@
             >
                 Reset
             </button>
-            <button type="submit">Submit</button>
+            <button type="submit" class="rounded-sm border border-[#e3e3e0] bg-white px-4 py-2 text-sm text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:bg-[#161615] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">Submit</button>
         </footer>
     </form>
 </template>
 
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
+import { ref, defineEmits } from 'vue';
+
+const emit = defineEmits(['success', 'close']);
+
+// Success message state
+const showSuccess = ref(false);
+const successMessage = ref('');
 
 // Replace reactive object with Inertia useForm
-const form = useForm({
+const form = useForm<{
+    name: string;
+    email: string;
+    text: string;
+    captcha: string;
+    image: File | null;
+}>({
     name: '',
     email: '',
     text: '',
     captcha: '',
-    image: {},
+    image: null,
 });
 
 const submitForm = () => {
     form.post(route('post.store'), {
         preserveScroll: true,
-        onSuccess: () => {
+        onSuccess: (page) => {
+            const message = page.props.flash?.message || 'Post created successfully';
+            successMessage.value = message;
+            showSuccess.value = true;
             form.reset();
-        }
+
+            // Close the modal after a short delay
+            setTimeout(() => {
+                showSuccess.value = false;
+                emit('close');
+            }, 3000);
+        },
     });
 };
 

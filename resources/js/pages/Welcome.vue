@@ -21,6 +21,8 @@ const props = defineProps<{
 }>();
 
 const posts = computed(() => props.pagination?.data || []);
+const currentPage = computed(() => props.pagination?.current_page || 1);
+const lastPage = computed(() => props.pagination?.last_page || 1);
 
 const showModal = ref(false);
 const showDeleteModal = ref(false);
@@ -254,7 +256,79 @@ const formatDate = (dateString: string): string => {
                     </div>
 
                     <div v-if="posts && posts.length > 0" class="mt-4 flex justify-center">
-                        <!-- Pagination controls could go here -->
+                        <!-- Pagination controls -->
+                        <div class="flex items-center space-x-1 text-sm">
+                            <!-- First Page -->
+                            <Link
+                                :href="route('home', {page: 1})"
+                                :class="[
+                                    'rounded-md p-2 flex items-center justify-center',
+                                    currentPage === 1
+                                        ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
+                                        : 'text-[#1b1b18] dark:text-[#EDEDEC] hover:bg-[#FDFDFC] dark:hover:bg-[#1C1C1A]'
+                                ]"
+                                :disabled="currentPage === 1"
+                            >
+                                <span class="sr-only">First page</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M9.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </Link>
+
+                            <!-- Previous Page -->
+                            <Link
+                                :href="route('home', {page: currentPage - 1})"
+                                :class="[
+                                    'rounded-md p-2 flex items-center justify-center',
+                                    currentPage === 1
+                                        ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
+                                        : 'text-[#1b1b18] dark:text-[#EDEDEC] hover:bg-[#FDFDFC] dark:hover:bg-[#1C1C1A]'
+                                ]"
+                                :disabled="currentPage === 1"
+                            >
+                                <span class="sr-only">Previous page</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </Link>
+                            <p class="rounded-md p-2 flex items-center justify-center text-[#1b1b18] dark:text-[#EDEDEC] hover:bg-[#FDFDFC] dark:hover:bg-[#1C1C1A]">{{ currentPage }}</p>
+
+                            <!-- Next Page -->
+                            <Link
+                                :href="route('home', {page: currentPage + 1})"
+                                :class="[
+                                    'rounded-md p-2 flex items-center justify-center',
+                                    currentPage === lastPage
+                                        ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
+                                        : 'text-[#1b1b18] dark:text-[#EDEDEC] hover:bg-[#FDFDFC] dark:hover:bg-[#1C1C1A]'
+                                ]"
+                                :disabled="currentPage === lastPage"
+                            >
+                                <span class="sr-only">Next page</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </Link>
+
+                            <!-- Last Page -->
+                            <Link
+                                :href="route('home', {page: lastPage})"
+                                :class="[
+                                    'rounded-md p-2 flex items-center justify-center',
+                                    currentPage === lastPage
+                                        ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
+                                        : 'text-[#1b1b18] dark:text-[#EDEDEC] hover:bg-[#FDFDFC] dark:hover:bg-[#1C1C1A]'
+                                ]"
+                                :disabled="currentPage === lastPage"
+                            >
+                                <span class="sr-only">Last page</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 001.414 0l5-5a1 1 0 000-1.414l-5-5a1 1 0 00-1.414 1.414L8.586 10 4.293 14.293a1 1 0 000 1.414z" clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 001.414 0l5-5a1 1 0 000-1.414l-5-5a1 1 0 00-1.414 1.414L14.586 10l-4.293 4.293a1 1 0 000 1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </main>

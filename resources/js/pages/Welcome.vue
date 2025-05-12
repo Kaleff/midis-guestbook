@@ -12,8 +12,7 @@ const props = defineProps<{
       name: string;
       text: string;
       created_at: string;
-      email?: string;
-      ip_address?: string;
+      editable?: boolean;
     }>;
     current_page: number;
     last_page: number;
@@ -25,7 +24,6 @@ const props = defineProps<{
   success?: boolean;
 }>();
 
-// Create a computed property to access posts data easily
 const posts = computed(() => props.pagination?.data || []);
 
 const showModal = ref(false);
@@ -38,16 +36,20 @@ const closeModal = () => {
     showModal.value = false;
 };
 
-/*const formatDate = (dateString: string) => {
+const formatDate = (dateString: string): string => {
+    if (!dateString) return '';
+
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    }).format(date);
-};*/
+
+    // Format: YYYY.MM.DD HH:MM
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${year}.${month}.${day} ${hours}:${minutes}`;
+};
 </script>
 
 <template>
@@ -179,7 +181,7 @@ const closeModal = () => {
                                 <tr v-for="post in posts" :key="post?.id" class="border-b border-[#e3e3e0] hover:bg-[#FDFDFC] dark:border-[#3E3E3A] dark:hover:bg-[#1C1C1A]">
                                     <td class="py-3 pr-4">{{ post?.name || 'Anonymous' }}</td>
                                     <td class="py-3 pr-4">{{ post?.text || 'No message content' }}</td>
-                                    <td class="py-3 text-[#706f6c] dark:text-[#A1A09A]">{{ post?.created_at }}</td>
+                                    <td class="py-3 text-[#706f6c] dark:text-[#A1A09A]">{{ formatDate(post?.created_at) }}</td>
                                     <td class="py-3">
                                         <div class="flex space-x-2">
                                             <!-- View Icon -->
@@ -193,25 +195,27 @@ const closeModal = () => {
                                                 </svg>
                                             </button>
 
-                                            <!-- Edit Icon -->
-                                            <button
-                                                class="rounded-full p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 text-blue-600 dark:text-blue-400"
-                                                title="Edit"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                            </button>
+                                            <template v-if="post?.editable">
+                                                <!-- Edit Icon -->
+                                                <button
+                                                    class="rounded-full p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 text-blue-600 dark:text-blue-400"
+                                                    title="Edit"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                </button>
 
-                                            <!-- Delete Icon -->
-                                            <button
-                                                class="rounded-full p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 text-red-600 dark:text-red-400"
-                                                title="Delete"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
+                                                <!-- Delete Icon -->
+                                                <button
+                                                    class="rounded-full p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 text-red-600 dark:text-red-400"
+                                                    title="Delete"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </button>
+                                            </template>
                                         </div>
                                     </td>
                                 </tr>

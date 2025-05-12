@@ -13,7 +13,7 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $pagination = Post::paginate(10);
+        $pagination = Post::orderBy('created_at', 'desc')->paginate(10);
         return Inertia::render('Welcome', [
             'message' => $request->input('message'),
             'success' => $request->input('success'),

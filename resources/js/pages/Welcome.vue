@@ -208,7 +208,12 @@ const formatDate = (dateString: string): string => {
                                                 />
                                             </a>
 
-                                            <span>{{ post?.text || 'No message content' }}</span>
+                                            <span>{{ post?.text || 'No message content' }}
+                                                <template v-if="post.created_at != post.updated_at">
+                                                    <br />
+                                                    <span class="text-[#f53003]">Updated at: {{ formatDate(post?.updated_at) }}</span>
+                                                </template>
+                                            </span>
                                         </div>
                                     </td>
                                     <td class="py-3 text-[#706f6c] dark:text-[#A1A09A]">{{ formatDate(post?.created_at) }}</td>

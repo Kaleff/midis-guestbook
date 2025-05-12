@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [PostController::class, 'index'])->name('home');
 Route::post('post/store', [PostController::class, 'store'])->name('post.store');
@@ -11,6 +11,18 @@ Route::post('post/destroy', [PostController::class, 'destroy'])->name('post.dest
 Route::get('dashboard', [PostController::class, 'indexAdmin'])
     ->middleware(['auth'])
     ->name('dashboard');
+
+Route::get('admins', [AdminController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('admins');
+
+Route::post('admin/store', [AdminController::class, 'store'])
+    ->middleware(['auth'])
+    ->name('admin.store');
+
+Route::post('admin/destroy', [AdminController::class, 'destroy'])
+    ->middleware(['auth'])
+    ->name('admin.destroy');
 
 Route::post('post/destroyAsAdmin', [PostController::class, 'destroyAsAdmin'])
     ->middleware(['auth'])

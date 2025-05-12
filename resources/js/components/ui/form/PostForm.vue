@@ -1,3 +1,77 @@
+<script setup lang="ts">
+import { useForm } from '@inertiajs/vue3';
+import { ref, defineEmits } from 'vue';
+
+// Define props for the component
+const props = defineProps({
+    id: {
+        type: Number,
+        default: 0,
+        required: true,
+    },
+    post: {
+        type: [Object, null],
+        default: null,
+        required: false,
+    },
+    as_admin: {
+        type: Boolean,
+        default: false,
+        required: false,
+    },
+});
+const emit = defineEmits(['close']);
+
+// Success message state
+const showSuccess = ref(false);
+const successMessage = ref('');
+
+// Replace reactive object with Inertia useForm
+const form = useForm<{
+    id: number | null;
+    name: string;
+    email: string;
+    text: string;
+    captcha: string;
+    image: File | null;
+}>({
+    id: props.post?.id || null,
+    name: props.post?.name || '',
+    email: props.post?.email || '',
+    text: props.post?.text || '',
+    captcha: '',
+    image: null,
+});
+
+const submitForm = () => {
+    form.post(route(props.as_admin ? 'post.storeAsAdmin' : 'post.store'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            successMessage.value = 'Post created successfully';
+            showSuccess.value = true;
+            form.reset();
+
+            // Close the modal after a short delay
+            window.setTimeout(() => {
+                showSuccess.value = false;
+                emit('close');
+            }, 3000);
+        },
+    });
+};
+
+const handleImageUpload = (event: Event) => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+        if (file.size > 4 * 1024 * 1024) {
+            alert('File size exceeds 4 MB.');
+            return;
+        }
+        form.image = file;
+    }
+};
+</script>
+
 <template>
     <form
         @submit.prevent="submitForm"
@@ -111,73 +185,3 @@
         </footer>
     </form>
 </template>
-
-<script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
-import { ref, defineEmits } from 'vue';
-
-// Define props for the component
-const props = defineProps({
-    id: {
-        type: Number,
-        default: 0,
-        required: true,
-    },
-    post: {
-        type: [Object, null],
-        default: null,
-        required: false,
-    },
-});
-
-const emit = defineEmits(['close']);
-
-// Success message state
-const showSuccess = ref(false);
-const successMessage = ref('');
-
-// Replace reactive object with Inertia useForm
-const form = useForm<{
-    id: number | null;
-    name: string;
-    email: string;
-    text: string;
-    captcha: string;
-    image: File | null;
-}>({
-    id: props.post?.id || null,
-    name: props.post?.name || '',
-    email: props.post?.email || '',
-    text: props.post?.text || '',
-    captcha: '',
-    image: null,
-});
-
-const submitForm = () => {
-    form.post(route('post.store'), {
-        preserveScroll: true,
-        onSuccess: () => {
-            successMessage.value = 'Post created successfully';
-            showSuccess.value = true;
-            form.reset();
-
-            // Close the modal after a short delay
-            window.setTimeout(() => {
-                showSuccess.value = false;
-                emit('close');
-            }, 3000);
-        },
-    });
-};
-
-const handleImageUpload = (event: Event) => {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-        if (file.size > 4 * 1024 * 1024) {
-            alert('File size exceeds 4 MB.');
-            return;
-        }
-        form.image = file;
-    }
-};
-</script>

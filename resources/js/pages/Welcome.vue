@@ -28,18 +28,18 @@ const lastPage = computed(() => props.pagination?.last_page || 1);
 const sortField = computed(() => props.order_column || 'created_at');
 const sortDirection = computed(() => props.order_direction || 'desc');
 
-const showModal = ref(false);
+const showPostModal = ref(false);
 const showDeleteModal = ref(false);
 const deleteId = ref(0);
 const selectedPost = ref<Post | null>(null);
 
 const openPostModal = (post: Post | null) => {
-    showModal.value = true;
+    showPostModal.value = true;
     selectedPost.value = post;
 };
 
 const closePostModal = () => {
-    showModal.value = false;
+    showPostModal.value = false;
     selectedPost.value = null;
 };
 
@@ -409,7 +409,7 @@ const changeSort = (field: string) => {
     </div>
     <!-- Modal for PostForm  -->
     <Modal
-        :isOpen="showModal"
+        :isOpen="showPostModal"
         title="Send us a message"
         @close="closePostModal"
     >

@@ -1,3 +1,53 @@
+<script setup lang="ts">
+import { useForm } from '@inertiajs/vue3';
+import { ref, defineEmits } from 'vue';
+
+const emit = defineEmits(['close']);
+
+// Success message state
+const showSuccess = ref(false);
+const successMessage = ref('');
+
+// Define props for the component
+const props = defineProps({
+    id: {
+        type: Number,
+        default: 0,
+        required: true,
+    },
+    as_admin: {
+        type: Boolean,
+        default: false,
+        required: false,
+    },
+});
+
+const form = useForm<{
+    id: number;
+    as_admin: boolean | null;
+}>({
+    id: props.id,
+    as_admin: props.as_admin ?? false,
+});
+
+const submitForm = () => {
+    form.post(route(props.as_admin ? 'post.destroyAsAdmin' : 'post.destroy'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            successMessage.value = 'Post deleted successfully';
+            showSuccess.value = true;
+            form.reset();
+
+            // Close the modal after a short delay
+            window.setTimeout(() => {
+                showSuccess.value = false;
+                emit('close');
+            }, 3000);
+        },
+    });
+};
+</script>
+
 <template>
     <form
         @submit.prevent="submitForm"
@@ -45,41 +95,3 @@
         </footer>
     </form>
 </template>
-
-<script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
-import { ref, defineEmits } from 'vue';
-
-const emit = defineEmits(['close']);
-
-// Success message state
-const showSuccess = ref(false);
-const successMessage = ref('');
-
-const props = defineProps<{
-    id: number;
-}>();
-
-const form = useForm<{
-    id: number;
-}>({
-    id: props.id,
-});
-
-const submitForm = () => {
-    form.post(route('post.destroy'), {
-        preserveScroll: true,
-        onSuccess: () => {
-            successMessage.value = 'Post deleted successfully';
-            showSuccess.value = true;
-            form.reset();
-
-            // Close the modal after a short delay
-            window.setTimeout(() => {
-                showSuccess.value = false;
-                emit('close');
-            }, 3000);
-        },
-    });
-};
-</script>

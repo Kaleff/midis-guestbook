@@ -39,7 +39,11 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-        $post = $request->input('id') ? Post::findOrFail($request->input('id')) : new Post();
+        $post = $request->input('id')
+            ? Post::where('ip_address', $request->ip())
+                  ->where('created_at', '>=', now()->subMinutes(5))
+                  ->findOrFail($request->input('id'))
+            : new Post();
         $post->name = $request->input('name');
         $post->email = $request->input('email');
         $post->text = $request->input('text');
@@ -67,6 +71,39 @@ class PostController extends Controller
         }
 
         $post->delete();
+
+        return back();
+    }
+
+    public function destroyAsAdmin(Request $request)
+    {
+        $post = Post::findOrFail($request->input('id'));
+
+        if ($post->image) {
+            Storage::disk('public')->delete($post->image);
+        }
+
+        $post->delete();
+
+        return back();
+    }
+
+    public function storeAsAdmin(StorePostRequest $request)
+    {
+        $post = Post::findOrFail($request->input('id'));
+        $post->name = $request->input('name');
+        $post->email = $request->input('email');
+        $post->text = $request->input('text');
+
+        if ($request->hasFile('image')) {
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image); // Delete the old image if it exists if you are updating with new one
+            }
+            $path = $request->file('image')->store('post-images', 'public');
+            $post->image = $path;
+        }
+
+        $post->save();
 
         return back();
     }

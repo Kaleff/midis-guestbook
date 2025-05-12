@@ -12,5 +12,13 @@ Route::get('dashboard', [PostController::class, 'indexAdmin'])
     ->middleware(['auth'])
     ->name('dashboard');
 
+Route::post('post/destroyAsAdmin', [PostController::class, 'destroyAsAdmin'])
+    ->middleware(['auth'])
+    ->name('post.destroyAsAdmin');
+
+Route::post('post/storeAsAdmin', [PostController::class, 'storeAsAdmin'])
+    ->middleware(['auth'])
+    ->name('post.storeAsAdmin');
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

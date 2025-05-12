@@ -5,6 +5,9 @@ import { Head, Link } from '@inertiajs/vue3';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 import { ref, computed } from 'vue';
 import { Post } from '@/types/Post';
+import Modal from '@/components/ui/modal/Modal.vue';
+import PostForm from '@/components/ui/form/PostForm.vue';
+import DeleteForm from '@/components/ui/form/DeleteForm.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -34,6 +37,31 @@ const currentPage = computed(() => props.pagination?.current_page || 1);
 const lastPage = computed(() => props.pagination?.last_page || 1);
 const sortField = computed(() => props.order_column || 'created_at');
 const sortDirection = computed(() => props.order_direction || 'desc');
+
+const showPostModal = ref(false);
+const showDeleteModal = ref(false);
+const deleteId = ref(0);
+const selectedPost = ref<Post | null>(null);
+
+const openPostModal = (post: Post | null) => {
+    showPostModal.value = true;
+    selectedPost.value = post;
+};
+
+const closePostModal = () => {
+    showPostModal.value = false;
+    selectedPost.value = null;
+};
+
+const openDeleteModal = (id: number) => {
+    showDeleteModal.value = true;
+    deleteId.value = id;
+};
+
+const closeDeleteModal = () => {
+    showDeleteModal.value = false;
+    deleteId.value = 0;
+};
 
 const formatDate = (dateString: string): string => {
     if (!dateString) return '';
@@ -217,6 +245,7 @@ const changeSort = (field: string) => {
                                         <button
                                             class="rounded-full p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 text-blue-600 dark:text-blue-400"
                                             title="Edit"
+                                            @click="openPostModal(post)"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -227,6 +256,7 @@ const changeSort = (field: string) => {
                                         <button
                                             class="rounded-full p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 text-red-600 dark:text-red-400"
                                             title="Delete"
+                                            @click="openDeleteModal(post.id)"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -320,5 +350,30 @@ const changeSort = (field: string) => {
                 </div>
             </div>
         </div>
+        <!-- Modal for PostForm  -->
+        <Modal
+            :isOpen="showPostModal"
+            title="Send us a message"
+            @close="closePostModal"
+        >
+            <PostForm
+                :post="selectedPost"
+                @close="closePostModal"
+                :as_admin="true"
+            />
+        </Modal>
+
+        <!-- Modal for delete confirmations -->
+        <Modal
+            :isOpen="showDeleteModal"
+            title="Message deletion"
+            @close="closeDeleteModal"
+        >
+            <DeleteForm
+                @close="closeDeleteModal"
+                :id="deleteId"
+                :as_admin="true"
+            />
+        </Modal>
     </AppLayout>
 </template>

@@ -13,17 +13,17 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $posts = Post::paginate(10);
+        $pagination = Post::paginate(10);
         return Inertia::render('Welcome', [
             'message' => $request->input('message'),
             'success' => $request->input('success'),
-            'posts' => $posts,
+            'pagination' => $pagination,
         ]);
     }
 
     public function store(StorePostRequest $request)
     {
-        $post = Post::create([
+        Post::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'text' => $request->input('text'),

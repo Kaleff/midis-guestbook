@@ -1,8 +1,32 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Modal from '@/components/ui/modal/Modal.vue';
 import PostForm from '@/components/ui/form/PostForm.vue';
+
+// Define props to receive data from Inertia
+const props = defineProps<{
+  pagination?: {
+    data: Array<{
+      id: number;
+      name: string;
+      text: string;
+      created_at: string;
+      email?: string;
+      ip_address?: string;
+    }>;
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+    links: Array<any>;
+  };
+  message?: string;
+  success?: boolean;
+}>();
+
+// Create a computed property to access posts data easily
+const posts = computed(() => props.pagination?.data || []);
 
 const showModal = ref(false);
 
@@ -13,6 +37,17 @@ const openModal = () => {
 const closeModal = () => {
     showModal.value = false;
 };
+
+/*const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    }).format(date);
+};*/
 </script>
 
 <template>
@@ -122,6 +157,36 @@ const closeModal = () => {
                             </a>
                         </li>
                     </ul>
+                </div>
+            </main>
+        </div>
+        <div class="mt-6 duration-750 starting:opacity-0 flex w-full items-center justify-center opacity-100 transition-opacity lg:grow" v-if="posts">
+            <main class="flex w-full max-w-[335px] flex-col-reverse overflow-hidden rounded-lg lg:max-w-4xl lg:flex-row">
+                <div class="w-full rounded-lg bg-white p-6 text-[13px] leading-[20px] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] dark:bg-[#161615] dark:text-[#EDEDEC] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]">
+                    <h2 class="mb-4 text-lg font-medium">Recent Messages</h2>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-[#e3e3e0] dark:border-[#3E3E3A]">
+                                    <th class="pb-2 text-left font-medium">Name</th>
+                                    <th class="pb-2 text-left font-medium">Message</th>
+                                    <th class="pb-2 text-left font-medium">Posted</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="post in posts" :key="post?.id" class="border-b border-[#e3e3e0] hover:bg-[#FDFDFC] dark:border-[#3E3E3A] dark:hover:bg-[#1C1C1A]">
+                                    <td class="py-3 pr-4">{{ post?.name || 'Anonymous' }}</td>
+                                    <td class="py-3 pr-4">{{ post?.text || 'No message content' }}</td>
+                                    <td class="py-3 text-[#706f6c] dark:text-[#A1A09A]">{{ post?.created_at }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div v-if="posts && posts.length > 0" class="mt-4 flex justify-center">
+                        <!-- Pagination controls could go here -->
+                    </div>
                 </div>
             </main>
         </div>

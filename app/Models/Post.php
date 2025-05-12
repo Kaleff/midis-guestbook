@@ -34,7 +34,7 @@ class Post extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = ['ip_address', 'email'];
+    protected $hidden = ['ip_address'];
 
     /**
      * Determine if the post is editable.

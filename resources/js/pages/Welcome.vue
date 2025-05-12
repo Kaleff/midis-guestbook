@@ -4,18 +4,12 @@ import { ref, computed } from 'vue';
 import Modal from '@/components/ui/modal/Modal.vue';
 import PostForm from '@/components/ui/form/PostForm.vue';
 import DeleteForm from '@/components/ui/form/DeleteForm.vue';
+import { Post } from '@/types/Post';
 
 // Define props to receive data from Inertia
 const props = defineProps<{
   pagination?: {
-    data: Array<{
-      id: number;
-      name: string;
-      text: string;
-      created_at: string;
-      editable?: boolean;
-      image_url?: string;
-    }>;
+    data: Array<Post>;
     current_page: number;
     last_page: number;
     per_page: number;
@@ -27,18 +21,20 @@ const props = defineProps<{
 }>();
 
 const posts = computed(() => props.pagination?.data || []);
-console.log(posts);
 
 const showModal = ref(false);
 const showDeleteModal = ref(false);
 const deleteId = ref(0);
+const selectedPost = ref<Post | null>(null);
 
-const openModal = () => {
+const openPostModal = (post: Post | null) => {
     showModal.value = true;
+    selectedPost.value = post;
 };
 
-const closeModal = () => {
+const closePostModal = () => {
     showModal.value = false;
+    selectedPost.value = null;
 };
 
 const openDeleteModal = (id: number) => {
@@ -116,7 +112,7 @@ const formatDate = (dateString: string): string => {
                                 Leave the
                                 <a
                                     href="javascript:void(0)"
-                                    @click="openModal"
+                                    @click="openPostModal(null)"
                                     class="ml-1 inline-flex items-center space-x-1 font-medium text-[#f53003] underline underline-offset-4 dark:text-[#FF4433]"
                                 >
                                     <span>message</span>
@@ -167,7 +163,7 @@ const formatDate = (dateString: string): string => {
                         <li>
                             <a
                                 href="javascript:void(0)"
-                                @click="openModal"
+                                @click="openPostModal(null)"
                                 class="inline-block rounded-sm border border-black bg-[#1b1b18] px-5 py-1.5 text-sm leading-normal text-white hover:border-black hover:bg-black dark:border-[#eeeeec] dark:bg-[#eeeeec] dark:text-[#1C1C1A] dark:hover:border-white dark:hover:bg-white"
                             >
                                 Leave a message
@@ -232,6 +228,7 @@ const formatDate = (dateString: string): string => {
                                                 <button
                                                     class="rounded-full p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 text-blue-600 dark:text-blue-400"
                                                     title="Edit"
+                                                    @click="openPostModal(post)"
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -268,10 +265,11 @@ const formatDate = (dateString: string): string => {
     <Modal
         :isOpen="showModal"
         title="Send us a message"
-        @close="closeModal"
+        @close="closePostModal"
     >
         <PostForm
-            @close="closeModal"
+            :post="selectedPost"
+            @close="closePostModal"
         />
     </Modal>
 

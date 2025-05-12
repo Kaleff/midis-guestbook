@@ -17,6 +17,11 @@
             </div>
         </div>
 
+        <input v-if="form.id"
+            type="hidden"
+            name="id"
+            v-model="form.id"
+        />
         <!-- Name Input -->
         <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-[#706f6c] dark:text-[#A1A09A]">
@@ -112,11 +117,16 @@ import { useForm } from '@inertiajs/vue3';
 import { ref, defineEmits } from 'vue';
 
 // Define props for the component
-defineProps({
+const props = defineProps({
     id: {
         type: Number,
         default: 0,
         required: true,
+    },
+    post: {
+        type: [Object, null],
+        default: null,
+        required: false,
     },
 });
 
@@ -128,15 +138,17 @@ const successMessage = ref('');
 
 // Replace reactive object with Inertia useForm
 const form = useForm<{
+    id: number | null;
     name: string;
     email: string;
     text: string;
     captcha: string;
     image: File | null;
 }>({
-    name: '',
-    email: '',
-    text: '',
+    id: props.post?.id || null,
+    name: props.post?.name || '',
+    email: props.post?.email || '',
+    text: props.post?.text || '',
     captcha: '',
     image: null,
 });

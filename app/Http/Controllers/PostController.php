@@ -25,19 +25,21 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-        $postData = [
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'text' => $request->input('text'),
-            'ip_address' => $request->ip(),
-        ];
+        $post = $request->input('id') ? Post::findOrFail($request->input('id')) : new Post();
+        $post->name = $request->input('name');
+        $post->email = $request->input('email');
+        $post->text = $request->input('text');
+        $post->ip_address = $request->ip();
 
         if ($request->hasFile('image')) {
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image); // Delete the old image if it exists if you are updating with new one
+            }
             $path = $request->file('image')->store('post-images', 'public');
-            $postData['image'] = $path;
+            $post->image = $path;
         }
 
-        Post::create($postData);
+        $post->save();
 
         return to_route('home');
     }

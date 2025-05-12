@@ -9,8 +9,9 @@
             class="mb-6 rounded-sm border border-[#9be679] bg-[#f2ffed] px-4 py-3 text-sm text-[#2e7b15] dark:border-[#3e8728] dark:bg-[#071f04] dark:text-[#9be679]"
         >
             <div class="flex items-center">
-                <svg class="h-5 w-5 mr-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path>
+                <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="2"></circle>
+                    <path d="M7 13L10 16L17 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
                 <span>{{ successMessage }}</span>
             </div>
@@ -110,7 +111,7 @@
 import { useForm } from '@inertiajs/vue3';
 import { ref, defineEmits } from 'vue';
 
-const emit = defineEmits(['success', 'close']);
+const emit = defineEmits(['close']);
 
 // Success message state
 const showSuccess = ref(false);
@@ -141,7 +142,7 @@ const submitForm = () => {
             form.reset();
 
             // Close the modal after a short delay
-            setTimeout(() => {
+            window.setTimeout(() => {
                 showSuccess.value = false;
                 emit('close');
             }, 3000);

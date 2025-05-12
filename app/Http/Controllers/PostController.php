@@ -13,7 +13,12 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-        return Inertia::render('Welcome');
+        $posts = Post::paginate(10);
+        return Inertia::render('Welcome', [
+            'message' => $request->input('message'),
+            'success' => $request->input('success'),
+            'posts' => $posts,
+        ]);
     }
 
     public function store(StorePostRequest $request)
@@ -27,7 +32,8 @@ class PostController extends Controller
 
         return to_route('home', [
             'message' => 'Post created successfully',
-            'success' => true
+            'success' => true,
+            'page' => 1,
         ]);
     }
 }

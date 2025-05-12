@@ -209,8 +209,20 @@ const changeSort = (field: string) => {
                                                 class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
                                                 title="Sort by name"
                                             >
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-[#f53003] dark:text-[#FF4433]': sortField === 'name'}">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    :class="{'text-[#f53003] dark:text-[#FF4433]': sortField === 'name'}">
+                                                    <!-- Triangle pointing up (for ascending) -->
+                                                    <path v-if="sortField === 'name' && sortDirection === 'asc'"
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 15l7-7 7 7" />
+                                                    <!-- Triangle pointing down (for descending) -->
+                                                    <path v-else-if="sortField === 'name' && sortDirection === 'desc'"
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 9l-7 7-7-7" />
+                                                    <!-- Default (neutral) triangle icon -->
+                                                    <path v-else
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 15l7-7 7 7" />
                                                 </svg>
                                             </button>
                                         </div>
@@ -224,8 +236,20 @@ const changeSort = (field: string) => {
                                                 class="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
                                                 title="Sort by date"
                                             >
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-[#f53003] dark:text-[#FF4433]': sortField === 'created_at'}">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    :class="{'text-[#f53003] dark:text-[#FF4433]': sortField === 'created_at'}">
+                                                    <!-- Triangle pointing up (for ascending) -->
+                                                    <path v-if="sortField === 'created_at' && sortDirection === 'asc'"
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 15l7-7 7 7" />
+                                                    <!-- Triangle pointing down (for descending) -->
+                                                    <path v-else-if="sortField === 'created_at' && sortDirection === 'desc'"
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 9l-7 7-7-7" />
+                                                    <!-- Default (neutral) triangle icon -->
+                                                    <path v-else
+                                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 15l7-7 7 7" />
                                                 </svg>
                                             </button>
                                         </div>

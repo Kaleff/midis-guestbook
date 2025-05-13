@@ -82,7 +82,11 @@ for a scheduled worker, that creates back-ups everyday at 00:00
 
 > [!NOTE]
 > This is a product of fast time delivery, this project was made in 12-14 hours, thus, it lacks many moments I usually would like implement due to time shortage:
+
 > Reusable Vue components
+
 > Better structure utilizing resources, services and repositories
+
 > Click captcha
+
 > Better front-end data-flow

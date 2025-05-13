@@ -12,7 +12,7 @@ This is the project that allows to work with guest book comments and interact wi
 1) Clone the repo
 
 ```
-git clone [https://github.com/Kaleff/midis-guestbook.git](https://github.com/Kaleff/midis-guestbook.git)
+git clone https://github.com/Kaleff/midis-guestbook.git
 cd midis-guestbook
 ```
 2) Copy, configure the .env.example file and rename the copy to .env
